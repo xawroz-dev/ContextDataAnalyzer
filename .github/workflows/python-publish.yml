@@ -1,0 +1,77 @@
+name: Java Context Data Validation
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  validate_java:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Java Context Data Analyzer
+        run: |
+          javac -cp ".:spoon-core-10.2.0-jar-with-dependencies.jar" ContextDataKeyExtractor.java
+          java -cp ".:spoon-core-10.2.0-jar-with-dependencies.jar" ContextDataKeyExtractor src
+
+      - name: Run Python Validator
+        id: run_validator
+        run: python java_context_validator.py
+
+      - name: Upload Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: java-context-validation-report
+          path: reports/
+
+      - name: Comment on PR with Report Link
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const repo = context.repo.repo;
+            const owner = context.repo.owner;
+            const runId = process.env.GITHUB_RUN_ID;
+
+            const artifactUrl = `https://github.com/${owner}/${repo}/actions/runs/${runId}`;
+
+            await github.rest.issues.createComment({
+              owner: owner,
+              repo: repo,
+              issue_number: prNumber,
+              body: `🚀 Java context data validation report is available [here](${artifactUrl}).`
+            });
+
+      - name: Fail if validation errors
+        if: steps.run_validator.outcome == 'failure'
+        run: exit 1
