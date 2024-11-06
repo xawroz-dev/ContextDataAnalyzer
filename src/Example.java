@@ -12,6 +12,7 @@ public class Example {
         Map<String, Object> contextData = (Map<String, Object>) map.get(ACE_CONTEXT_DATA);
         contextData.put(CUSTOMER_NAME, "saroj");
         contextData.put("address", "napal");
+        contextData.put("accountId", "23423423");
 
         String orderIdKey = "orderId";
         contextData.get(orderIdKey);
