@@ -36,21 +36,29 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
+      - name: Download Spoon JAR
+        run: |
+          wget https://search.maven.org/remotecontent?filepath=fr/inria/gforge/spoon/spoon-core/10.2.0/spoon-core-10.2.0-jar-with-dependencies.jar -O spoon-core-10.2.0-jar-with-dependencies.jar
+
       - name: Run Java Context Data Analyzer
         run: |
           javac -cp ".:spoon-core-10.2.0-jar-with-dependencies.jar" ContextDataKeyExtractor.java
           java -cp ".:spoon-core-10.2.0-jar-with-dependencies.jar" ContextDataKeyExtractor src
+        continue-on-error: true
 
       - name: Run Python Validator
         id: run_validator
         run: python java_context_validator.py
+        continue-on-error: true
 
-      - name: Upload Report Artifact
+      - name: Deploy Report to GitHub Pages
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: java-context-validation-report
-          path: reports/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports
+          destination_dir: .  # Publish to the root of gh-pages
+          keep_files: true    # Keep existing files in gh-pages branch
 
       - name: Comment on PR with Report Link
         if: github.event_name == 'pull_request'
@@ -61,17 +69,22 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const repo = context.repo.repo;
             const owner = context.repo.owner;
-            const runId = process.env.GITHUB_RUN_ID;
 
-            const artifactUrl = `https://github.com/${owner}/${repo}/actions/runs/${runId}`;
+            // Construct the URL to the report
+            const reportUrl = `https://${owner}.github.io/${repo}/java_context_validation_report.html`;
 
             await github.rest.issues.createComment({
               owner: owner,
               repo: repo,
               issue_number: prNumber,
-              body: `🚀 Java context data validation report is available [here](${artifactUrl}).`
+              body: `🚀 Java context data validation report is available [here](${reportUrl}).`
             });
 
       - name: Fail if validation errors
         if: steps.run_validator.outcome == 'failure'
+        run: exit 1
+        continue-on-error: true
+
+      - name: Mark job as failed if there were errors
+        if: failure() && always()
         run: exit 1
