@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Java Context Data Validation Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Include Bootstrap CSS from CDN -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+    <!-- Optional: Include custom CSS for additional styling -->
+    <style>
+        /* Custom styles for severity levels */
+        .severity-error {
+            background-color: #f8d7da;
+        }
+        .severity-warning {
+            background-color: #fff3cd;
+        }
+        .severity-error .severity-label {
+            color: #721c24;
+            font-weight: bold;
+        }
+        .severity-warning .severity-label {
+            color: #856404;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-4">
+        <header class="text-center mb-4">
+            <h1>Java Context Data Validation Report</h1>
+        </header>
+
+        
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>File Name</th>
+                            <th>Line Number</th>
+                            <th>Method</th>
+                            <th>Key</th>
+                            <th>Issues</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>/home/runner/work/ContextDataAnalyzer/ContextDataAnalyzer/src/Example.java</td>
+                            <td>13</td>
+                            <td>put</td>
+                            <td>customerName</td>
+                            <td>
+                                <ul class="list-unstyled mb-0">
+                                    
+                                    <li class="p-2 mb-2 severity-error rounded">
+                                        <strong>
+                                            
+                                            <i class="fas fa-exclamation-circle text-danger"></i>
+                                            
+                                            Key not in approved dictionary
+                                        </strong><br>
+                                        
+                                        Suggestion: <em>customer_name</em><br>
+                                        
+                                        
+                                        Similarity Score: 96<br>
+                                        
+                                        Severity: <span class="severity-label">Error</span>
+                                    </li>
+                                    
+                                    <li class="p-2 mb-2 severity-warning rounded">
+                                        <strong>
+                                            
+                                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                                            
+                                            Key is not in snake_case
+                                        </strong><br>
+                                        
+                                        Suggestion: <em>Rename to snake_case</em><br>
+                                        
+                                        
+                                        Severity: <span class="severity-label">Warning</span>
+                                    </li>
+                                    
+                                </ul>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        
+
+    </div>
+
+    <!--
