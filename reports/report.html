@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BPMN Validation Report</title>
+    <!-- Bootstrap CSS via CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body { padding: 20px; }
+        .issue { color: red; }
+        .suggestion { color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">BPMN Validation Report</h1>
+
+        <!-- Summary Table -->
+        <h2>Summary</h2>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Issue Type</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Default Service Task Names</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Variable Name Issues</td>
+                    <td>4</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Default Service Task Names -->
+        <h2 class="mt-5">Default Service Task Names</h2>
+        
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>BPMN File</th>
+                        <th>Task ID</th>
+                        <th>Task Name</th>
+                        <th>Issue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>sample.bpmn</td>
+                        <td>Activity_123abc</td>
+                        <td>Service Task with Default ID</td>
+                        <td><span class="issue">Default service task ID used.</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>sample.bpmn</td>
+                        <td>Activity_456def</td>
+                        <td>Another Service Task</td>
+                        <td><span class="issue">Default service task ID used.</span></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        
+
+        <!-- Variable Name Issues -->
+        <h2 class="mt-5">Variable Name Issues</h2>
+        
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>BPMN File</th>
+                        <th>Task ID</th>
+                        <th>Task Name</th>
+                        <th>Variable</th>
+                        <th>Suggestion</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>sample.bpmn</td>
+                        <td>Activity_123abc</td>
+                        <td>Service Task with Default ID</td>
+                        <td><span class="issue">customer_email</span></td>
+                        <td>
+                            
+                                <span class="suggestion">customerEmail</span>
+                            
+                        </td>
+                        <td>96</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>sample.bpmn</td>
+                        <td>ProcessOrderTask</td>
+                        <td>Process Order</td>
+                        <td><span class="issue">orderId</span></td>
+                        <td>
+                            
+                                No close match found
+                            
+                        </td>
+                        <td>N/A</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>sample.bpmn</td>
+                        <td>Activity_456def</td>
+                        <td>Another Service Task</td>
+                        <td><span class="issue">customer_name</span></td>
+                        <td>
+                            
+                                No close match found
+                            
+                        </td>
+                        <td>N/A</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>sample.bpmn</td>
+                        <td>Activity_456def</td>
+                        <td>Another Service Task</td>
+                        <td><span class="issue">order_amount</span></td>
+                        <td>
+                            
+                                No close match found
+                            
+                        </td>
+                        <td>N/A</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        
+    </div>
+</body>
+</html>

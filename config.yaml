@@ -1,0 +1,13 @@
+checks:
+  validate_context_data_keys:
+    enabled: true
+    severity: 'error'  # 'error' for mandatory, 'warning' for optional
+  check_snake_case:
+    enabled: true
+    severity: 'warning'
+
+fuzzy_match_threshold: 85
+approved_variables_file: 'data/approved_variables.csv'
+report:
+  output_file: 'reports/java_context_validation_report.html'
+  template_file: 'templates/report_template.html'
